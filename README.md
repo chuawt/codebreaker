@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# codelogic.
 
-# Run and deploy your AI Studio app
+An interactive Mastermind-style puzzle game.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/f1cd413a-5b3e-4d61-90d0-8182348723ce
+## What it does
+
+As a covert operative, your mission is to decode the target's safe before time runs out! 
+
+There are three difficulty levels:
+
+- **Easy** — 3 pegs. 8 tries. 6 colors. Suitable for kids.
+- **Classic** — 4 pegs. 10 tries. 6 colors. The classic "Mastermind" game.
+- **Challenging** — 5 pegs. 12 tries. 8 colors. For S-tier agents only.
+
+## How to use it
+
+1. Choose a game mode.
+2. Tap on each peg to choose your color. 
+3. Tap on the tick to confirm your choice.
+4. Look at the feedback clues (red for correct color and position, white for correct color but wrong position).
+
+## Stack
+
+React 19 + TypeScript single-page app built with Vite and Tailwind — fast development, simple build.
+
+## Use it online
+
+Visit [codelogic.pages.dev](https://codelogic.pages.dev/) to use the app.
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
-
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
+
+---
+
+*Intelligent. Fun. No notifications.*
