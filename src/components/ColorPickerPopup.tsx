@@ -17,35 +17,42 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
   const popupRef = React.useRef<HTMLDivElement>(null);
   const [isReady, setIsReady] = React.useState(false);
   const [adjustedPos, setAdjustedPos] = React.useState({ x: position.x, y: position.y });
+  const [isMobile, setIsMobile] = React.useState(() => typeof window !== 'undefined' ? window.innerWidth < 640 : false);
 
   React.useLayoutEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  React.useLayoutEffect(() => {
+    setIsReady(false);
     if (popupRef.current) {
       const rect = popupRef.current.getBoundingClientRect();
       const padding = 12;
       const screenWidth = window.innerWidth;
+      const currentIsMobile = screenWidth < 640;
       
-      const isMobile = screenWidth < 640;
-      
-      // Calculate desired left position
-      let left = isMobile 
-        ? (screenWidth - rect.width) / 2 
-        : position.x - rect.width / 2;
-
-      // Vertical position - fixed height above the peg
-      // We use a constant offset above the peg's top center
+      // Calculate horizontal position
+      // For mobile, we center horizontally relative to the window.
+      // For desktop, we center horizontally relative to the peg.
+      let left = currentIsMobile ? screenWidth / 2 : position.x;
       let top = position.y - rect.height - 15;
 
-      // Ensure popup is within horizontal bounds for desktop (mobile is already centered)
-      if (!isMobile) {
-        if (left < padding) {
-          left = padding;
-        } else if (left + rect.width > screenWidth - padding) {
-          left = screenWidth - rect.width - padding;
+      // Desktop horizontal clamping (mobile is always center 50% shift)
+      if (!currentIsMobile) {
+        const halfWidth = rect.width / 2;
+        if (left - halfWidth < padding) {
+          left = halfWidth + padding;
+        } else if (left + halfWidth > screenWidth - padding) {
+          left = screenWidth - halfWidth - padding;
         }
+      } else {
+        // Force integer horizontal center for mobile to avoid any sub-pixel sliding issues
+        left = Math.floor(screenWidth / 2);
       }
 
       // Vertical boundary check: if too high, flip to below the peg
-      // We still do this to prevent it from going off the very top of the screen
       if (top < padding) {
         top = position.y + 50; 
       }
@@ -58,7 +65,7 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
       setAdjustedPos({ x: left, y: top });
       setIsReady(true);
     }
-  }, [position, colors.length]);
+  }, [position.x, position.y, colors.length, isMobile]);
 
   return (
     <>
@@ -78,10 +85,12 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
           scale: { duration: 0.2 }
         }}
         exit={{ opacity: 0, scale: 0.8 }}
-        className={`fixed z-[100] glass-card p-1.5 sm:p-2 rounded-full flex items-center gap-1 shadow-2xl border-white/20 whitespace-nowrap ${isReady ? 'visible' : 'invisible'}`}
+        className={`fixed z-[100] glass-card p-2 sm:p-2.5 rounded-full flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/20 whitespace-nowrap ${isReady ? 'visible' : 'invisible'}`}
         style={{ 
-          left: adjustedPos.x,
-          top: adjustedPos.y
+          left: isMobile ? '50%' : adjustedPos.x,
+          top: adjustedPos.y,
+          transform: 'translateX(-50%)',
+          position: 'fixed'
         }}
       >
         <div key="picker-container" className="flex items-center gap-1 sm:gap-1.5">

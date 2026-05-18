@@ -40,20 +40,20 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                   onClick={() => onThemeChange('Lollipop')}
                   className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
                     currentTheme === 'Lollipop' 
-                      ? 'bg-rose-400/20 border-rose-400 text-white' 
+                      ? 'bg-pink-300/20 border-pink-300 text-white' 
                       : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-rose-400/20 flex items-center justify-center">
-                      <Candy size={20} className={currentTheme === 'Lollipop' ? 'text-rose-400' : 'text-white/40'} />
+                    <div className="w-10 h-10 rounded-xl bg-pink-300/20 flex items-center justify-center">
+                      <Candy size={20} className={currentTheme === 'Lollipop' ? 'text-pink-300' : 'text-white/40'} />
                     </div>
                     <div className="text-left">
                       <div className="font-bold">Lollipop</div>
                       <div className="text-[10px] opacity-60">Glossy 3D candy colors</div>
                     </div>
                   </div>
-                  {currentTheme === 'Lollipop' && <div className="w-2 h-2 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.8)]" />}
+                  {currentTheme === 'Lollipop' && <div className="w-2 h-2 rounded-full bg-pink-300 shadow-[0_0_8px_rgba(249,168,212,0.8)]" />}
                 </button>
 
                 <button

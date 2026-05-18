@@ -105,25 +105,24 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
             return (
               <motion.div
                 key={`row-${rowIndex}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className={`flex items-center justify-between p-2 sm:p-3 rounded-2xl transition-all ${
-                  isCurrent ? 'bg-primary/20 border border-primary/40' : 'bg-surface-container/40'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`flex items-center justify-between p-2 sm:p-3 rounded-2xl transition-all h-[60px] sm:h-[80px] shrink-0 ${
+                  isCurrent ? 'bg-primary/20 border border-primary/40 shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)]' : 'bg-surface-container/40'
                 } ${isInactive ? 'opacity-30 grayscale' : ''}`}
               >
                 <div className="flex items-center gap-2 sm:gap-4">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-[8px] sm:text-[10px] font-bold text-white/30 border border-white/5 shadow-inner">
                     {rowIndex + 1}
                   </div>
-                  <div className="flex gap-1.5 sm:gap-3">
+                  <div className="flex flex-1 justify-center gap-6 sm:gap-8">
                     {Array.from({ length: config.pegs }).map((_, colIndex) => {
                       const color = attempt ? attempt.colors[colIndex] : isCurrent ? currentGuess[colIndex] : null;
                       return (
                         <div
                           key={`row-${rowIndex}-peg-${colIndex}`}
                           onClick={(e) => isCurrent && handlePegClick(colIndex, e)}
-                          className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full transition-all flex items-center justify-center cursor-pointer ${
+                          className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full transition-all flex items-center justify-center cursor-pointer touch-manipulation ${
                             color 
                               ? theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl'
                               : 'bg-surface-container-highest shadow-inner border border-white/5'
@@ -176,39 +175,39 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
       </div>
     </div>
 
-      <AnimatePresence>
-        {activePicker && (
-          <ColorPickerPopup
-            position={{ x: activePicker.x, y: activePicker.y }}
-            onSelect={handleColorSelect}
-            onClose={() => setActivePicker(null)}
-            colors={COLORS.slice(0, config.colorCount)}
-            theme={theme}
-          />
-        )}
-      </AnimatePresence>
+    <AnimatePresence>
+      {activePicker && (
+        <ColorPickerPopup
+          position={{ x: activePicker.x, y: activePicker.y }}
+          onSelect={handleColorSelect}
+          onClose={() => setActivePicker(null)}
+          colors={COLORS.slice(0, config.colorCount)}
+          theme={theme}
+        />
+      )}
+    </AnimatePresence>
 
-      <AnimatePresence>
-        {gameStatus !== 'PLAYING' && (
-          <GameOverModal
-            status={gameStatus}
-            time={time}
-            moves={history.length}
-            secretCode={secretCode}
-            theme={theme}
-            onAgain={() => {
-              const availableColors = COLORS.slice(0, config.colorCount);
-              const code = Array.from({ length: config.pegs }, () => availableColors[Math.floor(Math.random() * availableColors.length)]);
-              setSecretCode(code);
-              setCurrentGuess(Array(config.pegs).fill(null));
-              setHistory([]);
-              setGameStatus('PLAYING');
-              setTime(0);
-            }}
-            onMenu={onQuit}
-          />
-        )}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence>
+      {gameStatus !== 'PLAYING' && (
+        <GameOverModal
+          status={gameStatus}
+          time={time}
+          moves={history.length}
+          secretCode={secretCode}
+          theme={theme}
+          onAgain={() => {
+            const availableColors = COLORS.slice(0, config.colorCount);
+            const code = Array.from({ length: config.pegs }, () => availableColors[Math.floor(Math.random() * availableColors.length)]);
+            setSecretCode(code);
+            setCurrentGuess(Array(config.pegs).fill(null));
+            setHistory([]);
+            setGameStatus('PLAYING');
+            setTime(0);
+          }}
+          onMenu={onQuit}
+        />
+      )}
+    </AnimatePresence>
+  </div>
   );
 }
