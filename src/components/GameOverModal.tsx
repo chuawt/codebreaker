@@ -23,7 +23,13 @@ export default function GameOverModal({ status, time, moves, secretCode, theme, 
       <motion.div
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        className="glass-card w-full max-w-sm p-8 rounded-3xl text-center space-y-6 my-auto"
+        className={`glass-card w-full max-w-sm p-8 rounded-3xl text-center space-y-6 my-auto ${
+          theme !== 'Lollipop' ? 'theme-' + theme.toLowerCase() : ''
+        } ${theme === 'Animals' ? 'is-light-theme' : ''}`}
+        style={{
+          borderColor: theme !== 'Lollipop' ? 'var(--theme-accent)' : undefined,
+          boxShadow: theme !== 'Lollipop' ? '0 0 40px var(--theme-surface-glow)' : undefined
+        }}
       >
         <div className="flex justify-center">
           {isWon ? (
@@ -56,7 +62,7 @@ export default function GameOverModal({ status, time, moves, secretCode, theme, 
                   theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 text-xl'
                 }`}
               >
-                {theme === 'Animals' && THEME_PEGS.Animals[color]}
+                {theme !== 'Lollipop' && THEME_PEGS[theme as Exclude<Theme, 'Lollipop'>][color]}
               </div>
             ))}
           </div>
@@ -76,13 +82,17 @@ export default function GameOverModal({ status, time, moves, secretCode, theme, 
         <div className="flex flex-col gap-3">
           <button
             onClick={onAgain}
-            className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-emerald-500/20"
+            className="w-full text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg"
+            style={{ 
+              backgroundColor: theme === 'Lollipop' ? '#10b981' : 'var(--theme-accent)',
+              boxShadow: theme === 'Lollipop' ? '0 10px 15px -3px rgba(16, 185, 129, 0.4)' : '0 10px 15px -3px var(--theme-surface-glow)'
+            }}
           >
             <RotateCcw size={20} /> Play Again
           </button>
           <button
             onClick={onMenu}
-            className="w-full bg-emerald-700/50 border border-emerald-500/30 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-emerald-700/70 active:scale-[0.98] transition-all"
+            className="w-full bg-white/5 border border-white/10 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-white/10 active:scale-[0.98] transition-all"
           >
             <LayoutGrid size={20} /> Main Menu
           </button>

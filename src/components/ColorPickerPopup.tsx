@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { PegColor } from '../types';
 import { COLORS, COLOR_MAP, THEME_PEGS } from '../constants';
@@ -34,12 +35,10 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
       const currentIsMobile = screenWidth < 640;
       
       // Calculate horizontal position
-      // For mobile, we center horizontally relative to the window.
-      // For desktop, we center horizontally relative to the peg.
       let left = currentIsMobile ? screenWidth / 2 : position.x;
       let top = position.y - rect.height - 15;
 
-      // Desktop horizontal clamping (mobile is always center 50% shift)
+      // Desktop horizontal clamping
       if (!currentIsMobile) {
         const halfWidth = rect.width / 2;
         if (left - halfWidth < padding) {
@@ -47,9 +46,6 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
         } else if (left + halfWidth > screenWidth - padding) {
           left = screenWidth - halfWidth - padding;
         }
-      } else {
-        // Force integer horizontal center for mobile to avoid any sub-pixel sliding issues
-        left = Math.floor(screenWidth / 2);
       }
 
       // Vertical boundary check: if too high, flip to below the peg
@@ -67,29 +63,30 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
     }
   }, [position.x, position.y, colors.length, isMobile]);
 
-  return (
+  const content = (
     <>
       <motion.div
         key="picker-popup"
         ref={popupRef}
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.8, x: "-50%" }}
         animate={isReady ? { 
           opacity: 1, 
           scale: 1, 
+          x: "-50%"
         } : { 
           opacity: 0, 
           scale: 0.8,
-        }}
+          x: "-50%"
+        } }
         transition={{
           opacity: { duration: 0.2 },
           scale: { duration: 0.2 }
         }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        className={`fixed z-[100] glass-card p-2 sm:p-2.5 rounded-full flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/20 whitespace-nowrap ${isReady ? 'visible' : 'invisible'}`}
+        exit={{ opacity: 0, scale: 0.8, x: "-50%" }}
+        className={`fixed z-[1000] glass-card p-2 sm:p-2.5 rounded-full flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/20 whitespace-nowrap overflow-visible touch-none select-none ${isReady ? 'visible' : 'invisible'}`}
         style={{ 
-          left: isMobile ? '50%' : adjustedPos.x,
-          top: adjustedPos.y,
-          transform: 'translateX(-50%)',
+          left: `${adjustedPos.x}px`,
+          top: `${adjustedPos.y}px`,
           position: 'fixed'
         }}
       >
@@ -97,18 +94,26 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
           {colors.map((color) => (
             <button
               key={`picker-btn-${color}`}
-              onClick={() => onSelect(color)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onSelect(color);
+              }}
               className={`w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full flex items-center justify-center transition-transform active:scale-95 shadow-md ${
                 theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl'
               }`}
             >
-              {theme === 'Animals' && THEME_PEGS.Animals[color]}
+              {theme !== 'Lollipop' && THEME_PEGS[theme as Exclude<Theme, 'Lollipop'>][color]}
             </button>
           ))}
           <div key="picker-divider" className="w-[1px] h-6 bg-white/10 mx-0.5 shrink-0" />
           <button
             key="picker-btn-none"
-            onClick={() => onSelect(null)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onSelect(null);
+            }}
             className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full bg-white/5 border border-white/20 peg-3d flex items-center justify-center text-white/20 hover:text-white/40 transition-colors active:scale-95"
             title="Remove color"
           >
@@ -118,9 +123,15 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
       </motion.div>
       <div 
         key="picker-backdrop"
-        className="fixed inset-0 z-[90]" 
-        onClick={onClose} 
+        className="fixed inset-0 z-[900] bg-transparent" 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }}
       />
     </>
   );
+
+  return createPortal(content, document.body);
 }

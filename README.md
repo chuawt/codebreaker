@@ -6,7 +6,7 @@ An interactive Mastermind-style puzzle game.
 
 ## What it does
 
-As a covert operative, your mission is to decode the target's safe before time runs out! 
+As a covert operative, your mission is to decode the target's safe before your attempts run out! 
 
 There are three difficulty levels:
 
@@ -24,6 +24,7 @@ There are three difficulty levels:
 ## Stack
 
 React 19 + TypeScript single-page app built with Vite and Tailwind — fast development, simple build.
+- Include various fun themes.
 
 ## Use it online
 

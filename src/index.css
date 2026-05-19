@@ -16,9 +16,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
 
-body {
+html, body {
   @apply bg-surface text-on-surface-variant antialiased;
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
+  scrollbar-gutter: stable;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
 }
 
 .glass-card {
@@ -29,6 +38,104 @@ body {
 
 .board-recess {
   box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.theme-galactic {
+  --theme-accent: #60a5fa;
+  --theme-accent-rgb: 96, 165, 250;
+  --theme-surface-glow: rgba(96, 165, 250, 0.1);
+  background: radial-gradient(circle at 50% 50%, #1a1c2e 0%, #05050a 100%);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(100, 100, 255, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(200, 100, 255, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, #0a0c1a 0%, #020204 100%);
+}
+
+.theme-fantasy {
+  --theme-accent: #c084fc;
+  --theme-accent-rgb: 192, 132, 252;
+  --theme-surface-glow: rgba(192, 132, 252, 0.1);
+  background: radial-gradient(circle at 50% 50%, #251b36 0%, #0d0a14 100%);
+}
+
+.theme-animals {
+  --theme-accent: #10b981;
+  --theme-accent-rgb: 16, 185, 129;
+  --theme-surface-glow: rgba(16, 185, 129, 0.05);
+  --theme-text: #ecfdf5;
+  --color-on-surface: #d1fae5;
+  --color-on-surface-variant: #a7f3d0;
+  --color-surface-container: rgba(255, 255, 255, 0.05);
+  --color-surface-container-highest: #ffffff;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+}
+
+.is-light-theme .feedback-background {
+  background-color: #10b981 !important;
+}
+
+.is-light-theme .text-white\/40 {
+  color: rgba(167, 243, 208, 0.6);
+}
+
+.is-light-theme .text-white\/30 {
+  color: rgba(167, 243, 208, 0.4);
+}
+
+.is-light-theme .text-white\/20 {
+  color: rgba(167, 243, 208, 0.3);
+}
+
+.is-light-theme .text-white\/60 {
+  color: rgba(209, 250, 229, 0.8);
+}
+
+.is-light-theme .bg-white\/5 {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.is-light-theme .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.is-light-theme .bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.is-light-theme .border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.is-light-theme .border-white\/5 {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.is-light-theme .bg-surface-container-highest {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.is-light-theme .bg-surface-container-high {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(6, 78, 59, 0.1);
+}
+
+.is-light-theme .bg-surface-container {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.is-light-theme .glass-card {
+  background: rgba(6, 78, 59, 0.4);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.is-light-theme .board-recess {
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.is-light-theme .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(6, 78, 59, 0.2);
 }
 
 .peg-3d {
