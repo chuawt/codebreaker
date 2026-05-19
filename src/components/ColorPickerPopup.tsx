@@ -99,8 +99,8 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
                 e.stopPropagation();
                 onSelect(color);
               }}
-              className={`w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-full flex items-center justify-center transition-transform active:scale-95 shadow-md ${
-                theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl sm:text-2xl'
+              className={`w-11 h-11 sm:w-16 sm:h-16 shrink-0 rounded-full flex items-center justify-center transition-transform active:scale-95 shadow-md ${
+                theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl sm:text-3xl'
               }`}
             >
               {theme !== 'Lollipop' && THEME_PEGS[theme as Exclude<Theme, 'Lollipop'>][color]}
@@ -114,7 +114,7 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
               e.stopPropagation();
               onSelect(null);
             }}
-            className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white/5 border border-white/20 peg-3d flex items-center justify-center text-white/20 hover:text-white/40 transition-colors active:scale-95"
+            className="w-11 h-11 sm:w-16 sm:h-16 shrink-0 rounded-full bg-white/5 border border-white/20 peg-3d flex items-center justify-center text-white/20 hover:text-white/40 transition-colors active:scale-95"
             title="Remove color"
           >
             <div key="picker-none-dot" className="w-1.5 h-1.5 rounded-full bg-current" />
