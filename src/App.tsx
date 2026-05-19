@@ -71,7 +71,7 @@ export default function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow overflow-hidden px-2 sm:px-4 py-2 sm:py-4 max-w-lg mx-auto w-full flex flex-col items-center">
+      <main className="flex-grow overflow-hidden px-2 sm:px-4 py-2 sm:py-4 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto w-full flex flex-col items-center">
         <AnimatePresence mode="wait">
           {gameState === 'MENU' ? (
             <motion.div

@@ -95,7 +95,7 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
   const isCurrentRowFull = !currentGuess.includes(null);
 
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col h-full space-y-2 sm:space-y-4">
+    <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto flex flex-col h-full space-y-2 sm:space-y-4">
       <div className={`flex-grow glass-card rounded-2xl sm:rounded-3xl p-1.5 sm:p-6 board-recess relative overflow-hidden flex flex-col custom-scrollbar transition-all duration-500 ${theme !== 'Lollipop' ? 'theme-' + theme.toLowerCase() : ''}`}
            style={{ 
              borderColor: theme !== 'Lollipop' ? 'var(--theme-accent)' : undefined,
