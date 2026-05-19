@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Difficulty, GameStatus, Theme } from './types';
 import DifficultyMenu from './components/DifficultyMenu';
 import GameBoard from './components/GameBoard';
 import SettingsModal from './components/SettingsModal';
 import { Settings, Home, HelpCircle, Trophy, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { audioManager } from './lib/soundUtils';
 
 export default function App() {
   const [gameState, setGameState] = useState<GameStatus>('MENU');
   const [difficulty, setDifficulty] = useState<Difficulty>('Classic');
-  const [theme, setTheme] = useState<Theme>('Lollipop');
+  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('codelogic-theme') as Theme) || 'Lollipop');
+  const [soundEnabled, setSoundEnabled] = useState(() => localStorage.getItem('codelogic-sound') !== 'false');
   const [showRules, setShowRules] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('codelogic-theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem('codelogic-sound', String(soundEnabled));
+    audioManager.setEnabled(soundEnabled);
+  }, [soundEnabled]);
 
   const startLevel = (d: Difficulty) => {
     setDifficulty(d);
@@ -110,6 +121,8 @@ export default function App() {
         onThemeChange={(t) => {
           setTheme(t);
         }}
+        soundEnabled={soundEnabled}
+        onSoundToggle={setSoundEnabled}
       />
 
       {/* Rules Modal */}

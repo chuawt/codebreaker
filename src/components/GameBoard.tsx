@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Check, Info } from 'lucide-react';
 import ColorPickerPopup from './ColorPickerPopup';
 import GameOverModal from './GameOverModal';
+import { audioManager } from '../lib/soundUtils';
 
 interface GameBoardProps {
   difficulty: Difficulty;
@@ -62,6 +63,7 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     // Use actual viewport coordinates for the Portal-ed picker
     setActivePicker({ index, x: rect.left + rect.width / 2, y: rect.top });
+    audioManager.playSelect(theme);
   };
 
   const handleColorSelect = (color: PegColor | null) => {
@@ -70,6 +72,7 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
     nextGuess[activePicker.index] = color;
     setCurrentGuess(nextGuess);
     setActivePicker(null);
+    audioManager.playSelect(theme);
   };
 
   const handleSubmit = () => {
@@ -87,8 +90,12 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
 
     if (feedback.perfect === config.pegs) {
       setGameStatus('WON');
+      audioManager.playWin(theme);
     } else if (newHistory.length === config.attempts) {
       setGameStatus('LOST');
+      audioManager.playLose(theme);
+    } else {
+      audioManager.playFeedback(theme, feedback.perfect, feedback.partial);
     }
   };
 
@@ -260,22 +267,23 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
                               variants={{
                                 hidden: { scale: 0, opacity: 0, rotate: -20 },
                                 visible: { 
-                                  scale: 1, 
+                                  scale: [0, 1.5, 1], 
                                   opacity: 1, 
                                   rotate: 0,
                                   transition: {
                                     type: "spring",
                                     stiffness: 400,
-                                    damping: 12
+                                    damping: 12,
+                                    duration: 0.5
                                   }
                                 }
                               }}
                               animate={isPerfect ? {
-                                scale: [1, 1.2, 1],
-                                transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                                scale: [1, 1.25, 1],
+                                transition: { duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }
                               } : isPartial ? {
                                 scale: [1, 1.15, 1],
-                                transition: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
+                                transition: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5, repeatDelay: 1 }
                               } : {}}
                               className={`w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
                                 isPerfect ? 'perfect-dot' : 

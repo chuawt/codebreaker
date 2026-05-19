@@ -3,6 +3,7 @@ import { Theme, Difficulty, PegColor } from '../types';
 import { DIFFICULTY_SETTINGS, COLOR_MAP, COLORS, THEME_PEGS } from '../constants';
 import { motion } from 'motion/react';
 import { ArrowRight, RotateCcw, CircleDot, LayoutGrid, HelpCircle, Settings } from 'lucide-react';
+import { audioManager } from '../lib/soundUtils';
 
 interface DifficultyMenuProps {
   onSelect: (d: Difficulty) => void;
@@ -29,7 +30,10 @@ export default function DifficultyMenu({ onSelect, onShowRules, onShowSettings, 
               key={`difficulty-${level}`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => onSelect(level)}
+              onClick={() => {
+                onSelect(level);
+                audioManager.playConfirm();
+              }}
               className={`glass-card p-6 flex items-center justify-between group cursor-pointer relative overflow-hidden transition-all hover:ring-2 hover:ring-emerald-500 ${
                 isClassic ? 'border-primary/40' : 'border-white/10'
               }`}

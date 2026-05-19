@@ -4,6 +4,7 @@ import { GameStatus, PegColor, Difficulty, Theme } from '../types';
 import { formatTime } from '../lib/gameLogic';
 import { COLOR_MAP, THEME_PEGS } from '../constants';
 import { Trophy, Skull, RotateCcw, LayoutGrid } from 'lucide-react';
+import { audioManager } from '../lib/soundUtils';
 
 interface GameOverModalProps {
   status: GameStatus;
@@ -81,7 +82,10 @@ export default function GameOverModal({ status, time, moves, secretCode, theme, 
 
         <div className="flex flex-col gap-3">
           <button
-            onClick={onAgain}
+            onClick={() => {
+              onAgain();
+              audioManager.playSelect(theme);
+            }}
             className="w-full text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg"
             style={{ 
               backgroundColor: theme === 'Lollipop' ? '#10b981' : 'var(--theme-accent)',
@@ -91,7 +95,10 @@ export default function GameOverModal({ status, time, moves, secretCode, theme, 
             <RotateCcw size={20} /> Play Again
           </button>
           <button
-            onClick={onMenu}
+            onClick={() => {
+              onMenu();
+              audioManager.playConfirm();
+            }}
             className="w-full bg-white/5 border border-white/10 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-white/10 active:scale-[0.98] transition-all"
           >
             <LayoutGrid size={20} /> Main Menu

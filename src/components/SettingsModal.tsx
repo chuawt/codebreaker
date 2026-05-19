@@ -1,16 +1,20 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Candy, Sparkles, Rocket, Gem, Wand2 } from 'lucide-react';
+import { X, Candy, Sparkles, Rocket, Gem, Wand2, Volume2, VolumeX } from 'lucide-react';
 import { Theme } from '../types';
+
+import { audioManager } from '../lib/soundUtils';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentTheme: Theme;
   onThemeChange: (theme: Theme) => void;
+  soundEnabled: boolean;
+  onSoundToggle: (enabled: boolean) => void;
 }
 
-export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeChange }: SettingsModalProps) {
+export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeChange, soundEnabled, onSoundToggle }: SettingsModalProps) {
   const [pendingTheme, setPendingTheme] = React.useState<Theme>(currentTheme);
 
   React.useEffect(() => {
@@ -22,6 +26,7 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
   const handleConfirm = () => {
     onThemeChange(pendingTheme);
     onClose();
+    audioManager.playConfirm();
   };
 
   return (
@@ -55,9 +60,15 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
             <div className="space-y-4">
               <h3 className={`text-xs font-bold uppercase tracking-widest ${pendingTheme === 'Animals' ? 'text-emerald-900/60' : 'text-white/60'}`}>Peg Theme</h3>
               <div className="grid grid-cols-1 gap-3">
-                <button
+                <motion.button
                   onClick={() => setPendingTheme('Lollipop')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  animate={{ 
+                    scale: pendingTheme === 'Lollipop' ? 1.02 : 1,
+                    boxShadow: pendingTheme === 'Lollipop' ? '0 0 20px rgba(244, 114, 182, 0.3)' : '0 0 0px rgba(0,0,0,0)'
+                  }}
+                  className={`flex items-center justify-between p-4 rounded-2xl border transition-colors ${
                     pendingTheme === 'Lollipop' 
                       ? 'bg-pink-300/20 border-pink-300 text-white' 
                       : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
@@ -73,11 +84,17 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                     </div>
                   </div>
                   {pendingTheme === 'Lollipop' && <div className="w-2 h-2 rounded-full bg-pink-300 shadow-[0_0_8px_rgba(249,168,212,0.8)]" />}
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
                   onClick={() => setPendingTheme('Animals')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  animate={{ 
+                    scale: pendingTheme === 'Animals' ? 1.02 : 1,
+                    boxShadow: pendingTheme === 'Animals' ? '0 0 20px rgba(255, 255, 255, 0.1)' : '0 0 0px rgba(0,0,0,0)'
+                  }}
+                  className={`flex items-center justify-between p-4 rounded-2xl border transition-colors ${
                     pendingTheme === 'Animals' 
                       ? 'bg-[#065f46] border-[#065f46] text-white shadow-lg' 
                       : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
@@ -97,11 +114,17 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                     </div>
                   </div>
                   {pendingTheme === 'Animals' && <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.4)]" />}
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
                   onClick={() => setPendingTheme('Galactic')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  animate={{ 
+                    scale: pendingTheme === 'Galactic' ? 1.02 : 1,
+                    boxShadow: pendingTheme === 'Galactic' ? '0 0 20px rgba(96, 165, 250, 0.3)' : '0 0 0px rgba(0,0,0,0)'
+                  }}
+                  className={`flex items-center justify-between p-4 rounded-2xl border transition-colors ${
                     pendingTheme === 'Galactic' 
                       ? 'bg-blue-400/20 border-blue-400 text-white' 
                       : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
@@ -117,11 +140,17 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                     </div>
                   </div>
                   {pendingTheme === 'Galactic' && <div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]" />}
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
                   onClick={() => setPendingTheme('Fantasy')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  animate={{ 
+                    scale: pendingTheme === 'Fantasy' ? 1.02 : 1,
+                    boxShadow: pendingTheme === 'Fantasy' ? '0 0 20px rgba(192, 132, 252, 0.3)' : '0 0 0px rgba(0,0,0,0)'
+                  }}
+                  className={`flex items-center justify-between p-4 rounded-2xl border transition-colors ${
                     pendingTheme === 'Fantasy' 
                       ? 'bg-purple-400/20 border-purple-400 text-white' 
                       : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
@@ -137,8 +166,43 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                     </div>
                   </div>
                   {pendingTheme === 'Fantasy' && <div className="w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]" />}
-                </button>
+                </motion.button>
               </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className={`text-xs font-bold uppercase tracking-widest ${pendingTheme === 'Animals' ? 'text-emerald-900/60' : 'text-white/60'}`}>Preferences</h3>
+              <button
+                onClick={() => onSoundToggle(!soundEnabled)}
+                className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                  soundEnabled 
+                    ? 'bg-blue-400/10 border-blue-400/30 text-white' 
+                    : 'bg-white/5 border-white/10 text-white/40'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                    soundEnabled ? 'bg-blue-400/20' : 'bg-white/5'
+                  }`}>
+                    {soundEnabled ? (
+                      <Volume2 size={20} className="text-blue-400" />
+                    ) : (
+                      <VolumeX size={20} className="text-white/40" />
+                    )}
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold">Sound Effects</div>
+                    <div className="text-[10px] opacity-60">{soundEnabled ? 'Enabled' : 'Muted'}</div>
+                  </div>
+                </div>
+                <div className={`w-10 h-6 rounded-full relative transition-colors ${
+                  soundEnabled ? 'bg-blue-400' : 'bg-white/10'
+                }`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                    soundEnabled ? 'right-1' : 'left-1'
+                  }`} />
+                </div>
+              </button>
             </div>
 
             <div className="pt-6 border-t border-white/10 flex flex-col gap-4">
