@@ -33,10 +33,10 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
       const padding = 16;
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      const currentIsMobile = screenWidth < 640;
       
-      // Calculate horizontal position
-      let left = position.x;
+      // Center horizontally for tablets and phones (width < 1024), otherwise use peg position
+      const isTabletOrPhone = screenWidth < 1024;
+      let left = isTabletOrPhone ? screenWidth / 2 : position.x;
       let top = position.y - rect.height - 20;
 
       const halfWidth = rect.width / 2;
