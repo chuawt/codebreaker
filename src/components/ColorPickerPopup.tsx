@@ -30,17 +30,23 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
     setIsReady(false);
     if (popupRef.current) {
       const rect = popupRef.current.getBoundingClientRect();
-      const padding = 12;
+      const padding = 16;
       const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
       const currentIsMobile = screenWidth < 640;
       
       // Calculate horizontal position
-      let left = currentIsMobile ? screenWidth / 2 : position.x;
-      let top = position.y - rect.height - 15;
+      let left = position.x;
+      let top = position.y - rect.height - 20;
 
-      // Desktop horizontal clamping
-      if (!currentIsMobile) {
-        const halfWidth = rect.width / 2;
+      const halfWidth = rect.width / 2;
+      
+      // Horizontal clamping for all screen sizes
+      // If picker is wider than screen, just center it
+      if (rect.width > screenWidth - (padding * 2)) {
+        left = screenWidth / 2;
+      } else {
+        // Standard clamping
         if (left - halfWidth < padding) {
           left = halfWidth + padding;
         } else if (left + halfWidth > screenWidth - padding) {
@@ -50,12 +56,13 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
 
       // Vertical boundary check: if too high, flip to below the peg
       if (top < padding) {
-        top = position.y + 50; 
+        // Position below: peg is max 64px, so +80 provides some clearance
+        top = position.y + 80; 
       }
       
       // If flipping below still goes off screen, clamp it
-      if (top + rect.height > window.innerHeight - padding) {
-        top = window.innerHeight - rect.height - padding;
+      if (top + rect.height > screenHeight - padding) {
+        top = screenHeight - rect.height - padding;
       }
 
       setAdjustedPos({ x: left, y: top });
@@ -83,14 +90,14 @@ export default function ColorPickerPopup({ onSelect, onClose, position, colors, 
           scale: { duration: 0.2 }
         }}
         exit={{ opacity: 0, scale: 0.8, x: "-50%" }}
-        className={`fixed z-[1000] glass-card p-2 sm:p-2.5 rounded-full flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/20 whitespace-nowrap overflow-visible touch-none select-none ${isReady ? 'visible' : 'invisible'}`}
+        className={`fixed z-[1000] glass-card p-2 sm:p-2.5 rounded-[2rem] flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/20 whitespace-nowrap overflow-visible touch-none select-none ${isReady ? 'visible' : 'invisible'}`}
         style={{ 
           left: `${adjustedPos.x}px`,
           top: `${adjustedPos.y}px`,
           position: 'fixed'
         }}
       >
-        <div key="picker-container" className="flex items-center gap-1.5 sm:gap-2">
+        <div key="picker-container" className="flex flex-nowrap items-center justify-center gap-1.5 sm:gap-2">
           {colors.map((color) => (
             <button
               key={`picker-btn-${color}`}
