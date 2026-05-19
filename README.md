@@ -21,6 +21,14 @@ There are three difficulty levels:
 3. Tap on the tick to confirm your choice.
 4. Look at the feedback clues (red for correct color and position, white for correct color but wrong position).
 
+## Themes
+
+Customize your experience with four unique visual styles:
+- **🍭 Lollipop** — Bright colors and 3D glossy pegs. The classic experience.
+- **🌌 Galactic** — Decode using celestial bodies like rockets, planets, and galaxies.
+- **🏰 Fantasy** — A magical world with dragons, unicorns, and enchanted artifacts.
+- **🌿 Animals** — Jungle adventure featuring frogs, foxes, and other cute critters.
+
 ## Stack
 
 React 19 + TypeScript single-page app built with Vite and Tailwind — fast development, simple build.

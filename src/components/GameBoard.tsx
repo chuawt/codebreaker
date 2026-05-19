@@ -116,8 +116,8 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
              borderColor: theme !== 'Lollipop' ? 'var(--theme-accent)' : undefined,
              boxShadow: theme !== 'Lollipop' ? '0 0 40px var(--theme-surface-glow)' : undefined
            }}>
-        <div className="flex-grow overflow-y-auto custom-scrollbar flex flex-col-reverse gap-1.5 sm:gap-3 pr-1">
-          <div className="flex flex-col-reverse gap-1.5 sm:gap-3 min-h-full justify-start">
+        <div className="flex-grow overflow-y-auto custom-scrollbar flex flex-col-reverse gap-1 sm:gap-1.5 pr-1">
+          <div className="flex flex-col-reverse gap-1 sm:gap-1.5 min-h-full justify-start">
             {/* History Rows - Stacked from Bottom to Top */}
             {Array.from({ length: config.attempts }).map((_, rowIndex) => {
             const attempt = history[rowIndex];
@@ -129,7 +129,7 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
                 key={`row-${rowIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className={`flex items-center justify-between p-2 sm:p-3 rounded-2xl transition-all h-[60px] sm:h-[80px] shrink-0 border border-transparent ${
+                className={`flex items-center justify-between p-1.5 sm:p-2 rounded-2xl transition-all h-[52px] sm:h-[72px] shrink-0 border border-transparent ${
                   isCurrent && theme !== 'Animals' ? 'shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)]' : 'bg-surface-container/40'
                 } ${isInactive ? 'opacity-30 grayscale' : ''}`}
                 style={{
@@ -147,10 +147,10 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
                   </div>
                   <div className={`flex flex-1 justify-center ${
                     difficulty === 'Easy' 
-                      ? 'gap-10 sm:gap-14' 
+                      ? 'gap-10 sm:gap-16' 
                       : difficulty === 'Challenging' 
-                        ? 'gap-3 sm:gap-4' 
-                        : 'gap-6 sm:gap-8'
+                        ? 'gap-2 sm:gap-3' 
+                        : 'gap-5 sm:gap-7'
                   }`}>
                     {Array.from({ length: config.pegs }).map((_, colIndex) => {
                       const color = attempt ? attempt.colors[colIndex] : isCurrent ? currentGuess[colIndex] : null;
@@ -175,9 +175,9 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
                           }}
                           whileHover={isCurrent ? { scale: 1.1 } : {}}
                           whileTap={isCurrent ? { scale: 0.95 } : {}}
-                          className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full transition-all flex items-center justify-center cursor-pointer touch-manipulation relative overflow-visible ${
+                          className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full transition-all flex items-center justify-center cursor-pointer touch-manipulation relative overflow-visible ${
                             color 
-                              ? theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl'
+                              ? theme === 'Lollipop' ? `peg-3d ${COLOR_MAP[color]}` : 'bg-white/10 dark-inner-shadow text-xl sm:text-2xl'
                               : 'bg-surface-container-highest shadow-inner border border-white/5'
                           } ${isCurrent ? 'hover:ring-2 ring-primary/40' : ''}`}
                         >
@@ -222,7 +222,7 @@ export default function GameBoard({ difficulty, theme, onQuit }: GameBoardProps)
                 </div>
 
                 {/* Feedback Area */}
-                <div className={`w-9 h-9 sm:w-14 sm:h-14 glass-card rounded-xl flex items-center justify-center relative overflow-hidden ${theme === 'Animals' ? 'feedback-background' : ''}`}>
+                <div className={`w-10 h-10 sm:w-14 sm:h-14 glass-card rounded-xl flex items-center justify-center relative overflow-hidden ${theme === 'Animals' ? 'feedback-background' : ''}`}>
                   <AnimatePresence mode="wait">
                     {isCurrent && isCurrentRowFull ? (
                       <motion.button
