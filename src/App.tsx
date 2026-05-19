@@ -45,20 +45,20 @@ export default function App() {
             })}
           </h1>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           <button 
             onClick={() => setShowSettings(true)}
-            className="text-on-surface-variant hover:text-white transition-colors p-2"
+            className="text-on-surface-variant hover:text-white transition-colors p-1"
             title="Settings"
           >
-            <Settings size={20} />
+            <Settings size={32} />
           </button>
           <button 
             onClick={() => setShowRules(true)}
-            className="text-on-surface-variant hover:text-white transition-colors p-2"
+            className="text-on-surface-variant hover:text-white transition-colors p-1"
             title="Help"
           >
-            <HelpCircle size={20} />
+            <HelpCircle size={32} />
           </button>
         </div>
       </header>

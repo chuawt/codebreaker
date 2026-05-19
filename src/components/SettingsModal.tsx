@@ -72,7 +72,11 @@ export default function SettingsModal({ isOpen, onClose, currentTheme, onThemeCh
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-black/10 flex items-center justify-center">
-                      <Sparkles size={20} className={currentTheme === 'Animals' ? 'text-white' : 'text-white/40'} />
+                      {currentTheme === 'Animals' ? (
+                        <span className="text-2xl leading-none">🐧</span>
+                      ) : (
+                        <Sparkles size={20} className="text-white/40" />
+                      )}
                     </div>
                     <div className="text-left">
                       <div className="font-bold">Animals</div>
