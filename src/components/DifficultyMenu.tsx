@@ -13,7 +13,7 @@ interface DifficultyMenuProps {
 
 export default function DifficultyMenu({ onSelect, onShowRules, onShowSettings, theme }: DifficultyMenuProps) {
   return (
-    <div className="space-y-8 w-full max-w-lg">
+    <div className="space-y-8 w-full max-w-lg mx-auto">
       <header className="text-center space-y-3">
         <h2 className="text-3xl font-bold text-primary tracking-tight">Choose Your Challenge</h2>
         <p className="text-on-surface-variant">Decipher the hidden sequence before the turns run out. Every move brings you closer to the truth.</p>
